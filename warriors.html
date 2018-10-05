@@ -1,0 +1,109 @@
+<html>
+  <script>
+  // De små "krigarna" ska slåss med (S)ten, sa(x) eller (p)åse.
+  var weapons = ["S", "X", "P"];
+  var warriors = [];
+
+  // En krigare (warrior) har följande egenskaper
+  function Warrior() {
+    // Raden nedan googlade jag fram. Den skapar en liten slumpsträng.
+    this.name = Math.random().toString(36).substring(7);
+    let slump = Math.floor(Math.random() * 3);
+    this.weapon = weapons[slump];
+    this.health = 100;
+  }
+
+  function createWarriors(number) {
+    for(let i=0; i < number; i++) {
+      warriors.push(new Warrior());
+    }
+  }
+
+  // Funktionen för att låta två warriors slåss är kanske något otymplig?
+  // Jag jämför a och b, och tillfogar en eller båda lite skada.
+  // Om båda har samma vapen får de avdrag på hälsan med 10 enheter
+  // result-strängen är absolut inte optimal, då den upprepas flera gånger med i
+  // princip samma innehåll.
+
+  function fight(a, b) {
+    var result = "";
+
+    if (a.weapon == b.weapon) {
+      a.health -= 10;
+      b.health -= 10;
+      result = "draw";
+    }
+    else if (a.weapon == "S"){
+      if (b.weapon == "X") {
+        b.health -= 25;
+        result = b.name + " lost and is down to " + (b.health);
+      }
+      else {
+        a.health -= 25;
+        result = a.name + " lost and is down to " + (a.health);
+      }
+    }
+    else if (a.weapon == "X"){
+      if (b.weapon == "S") {
+        a.health -= 25;
+        result = a.name + " lost and is down to " + (a.health);
+      }
+      else {
+        b.health -= 25;
+        result = b.name + " lost and is down to " + (b.health);
+      }
+    }
+    else if (a.weapon == "P"){
+      if (b.weapon == "X") {
+        a.health -= 25;
+        result = a.name + " lost and is down to " + (a.health);
+      }
+      else {
+        b.health -= 25;
+        result = b.name + " lost and is down to " + (b.health);
+      }
+    }
+    // När matchen är avgjord skriver jag ut resultatet
+    // och anropar en funktion för att se om spelarna lever.
+    console.log(result);
+    checkHealth();
+  }
+
+  function checkHealth() {
+    // Lite onödigt att kolla alla warriors när det bara
+    // är två som torde vara utsatt för en minskning av
+    // hälsan.
+    warriors.forEach(function(warrior, index, object){
+      if (warrior.health < 1) {
+        console.log(warrior.name + " is dead.");
+        object.splice(index, 1);
+      }
+    })
+  }
+
+  // Skapa några objekt som slåss med sxp.
+  createWarriors(4);
+
+  let one = 1, two = 1;
+
+  // Låt warriors börja slåss så länge det finns minst två.
+  while (warriors.length > 1) {
+
+    // Variablerna one och two avgör vilka warrios som möts.
+    while (one == two) {
+      one = Math.floor(Math.random() * warriors.length);
+      two = Math.floor(Math.random() * warriors.length);
+    }
+
+    console.log(warriors[one].name + " vs " + warriors[two].name);
+    fight(warriors[one], warriors[two]);
+
+    // Justera one och two så att de är lika inför nästa loop
+    // Dålig metod, men får duga på en fredageftermiddag.
+    one = two;
+  }
+
+  console.log(warriors[0].name + " har vunnit");
+
+  </script>
+</html>
