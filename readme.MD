@@ -4,4 +4,6 @@ Alla objekt slåss, två och två i taget och till slut står bara en kvar.
 
 Koden är lite halvtaskig, men kan väl vara kul att studera för den som är intresserad.
 
+Producerad på en höft efter en dag med FED18G@MI.
+
 / Hans Andersson.
